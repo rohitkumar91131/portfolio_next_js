@@ -1,76 +1,189 @@
 import { Document, Page, Text, View, StyleSheet, Link } from '@react-pdf/renderer';
 
-// Create styles (CSS-like)
+const blue = '#1f6feb';
+
 const styles = StyleSheet.create({
-  page: { padding: 30, fontFamily: 'Helvetica' },
-  header: { marginBottom: 20, textAlign: 'center' },
-  name: { fontSize: 24, fontWeight: 'bold', marginBottom: 5, textTransform: 'uppercase' },
-  subHeader: { fontSize: 10, color: 'gray', marginBottom: 10 },
-  sectionTitle: { fontSize: 14, fontWeight: 'bold', marginTop: 15, marginBottom: 6, borderBottom: '1px solid black', paddingBottom: 2 },
-  
-  // Content Items
-  itemContainer: { marginBottom: 8 },
-  itemTitleRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2 },
-  itemTitle: { fontSize: 12, fontWeight: 'bold' },
-  itemDate: { fontSize: 10, color: 'gray' },
-  itemSubTitle: { fontSize: 10, fontStyle: 'italic', marginBottom: 2 },
-  itemDesc: { fontSize: 10, lineHeight: 1.4, color: '#333' },
-  
-  // Tech Stack pills
-  techRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 4 },
-  techItem: { fontSize: 8, backgroundColor: '#eee', padding: '2 4', borderRadius: 4 },
-  
-  link: { color: 'blue', textDecoration: 'none', fontSize: 10 }
+  page: {
+    padding: 32,
+    fontSize: 10,
+    fontFamily: 'Helvetica'
+  },
+
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+
+  contact: {
+    marginTop: 4,
+    color: '#555'
+  },
+
+  divider: {
+    marginVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e7eb'
+  },
+
+  section: {
+    marginTop: 12
+  },
+
+  sectionTitle: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    color: blue,
+    marginBottom: 6
+  },
+
+  itemTitle: {
+    fontSize: 10,
+    fontWeight: 'bold'
+  },
+
+  subText: {
+    color: '#555',
+    marginBottom: 4
+  },
+
+  projectGrid: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+
+  projectCol: {
+    width: '48%'
+  },
+
+  link: {
+    color: blue,
+    textDecoration: 'none'
+  },
+
+  skillRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+
+  skill: {
+    width: '33%',
+    marginBottom: 4
+  }
 });
 
-// The Actual PDF Component
-export const ResumeDocument = ({ projects, education }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      
-      {/* --- HEADER --- */}
-      <View style={styles.header}>
-        <Text style={styles.name}>Rohit Kumar</Text>
-        <Text style={styles.subHeader}>Full Stack Developer | React, Next.js, Node.js</Text>
-        <Text style={{ fontSize: 10 }}>
-           rk34190100@gmail.com  |  github.com/rohitkumar91131
+export default function InternshalaResume() {
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+
+        <Text style={styles.header}>Rohit Kumar</Text>
+        <Text style={styles.contact}>
+          rk34190100@gmail.com | +91 9113190285 | Kolkata
         </Text>
-      </View>
 
-      {/* --- EDUCATION SECTION --- */}
-      <Text style={styles.sectionTitle}>EDUCATION</Text>
-      {education.map((edu, index) => (
-        <View key={index} style={styles.itemContainer}>
-          <View style={styles.itemTitleRow}>
-            <Text style={styles.itemTitle}>{edu.degree}</Text>
-            <Text style={styles.itemDate}>{edu.startYear} - {edu.endYear}</Text>
-          </View>
-          <Text style={styles.itemSubTitle}>{edu.institution}</Text>
-          <Text style={styles.itemDesc}>{edu.description}</Text>
+        <View style={styles.divider} />
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>CAREER OBJECTIVE</Text>
+          <Text>
+            Enthusiastic B.Tech 3rd year student with hands-on experience in web development,
+            seeking industry exposure to build scalable and impactful products.
+          </Text>
         </View>
-      ))}
 
-      {/* --- PROJECTS SECTION --- */}
-      <Text style={styles.sectionTitle}>PROJECTS</Text>
-      {projects.map((proj, index) => (
-        <View key={index} style={styles.itemContainer}>
-          <View style={styles.itemTitleRow}>
-            <Text style={styles.itemTitle}>{proj.title}</Text>
-            {proj.liveLink && (
-              <Link src={proj.liveLink} style={styles.link}>Live Demo</Link>
-            )}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>EDUCATION</Text>
+
+          <Text style={styles.itemTitle}>
+            B.Tech, Chemical Technology (2023 – 2027)
+          </Text>
+          <Text style={styles.subText}>University of Calcutta</Text>
+
+          <Text style={styles.itemTitle}>
+            Senior Secondary (XII) – 2022
+          </Text>
+          <Text style={styles.subText}>
+            Purnea College, Purnea | 67.80%
+          </Text>
+
+          <Text style={styles.itemTitle}>
+            Secondary (X) – 2020
+          </Text>
+          <Text style={styles.subText}>
+            Shri Darwari Roy High School | 80%
+          </Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>PORTFOLIO</Text>
+          <Link src="https://your-portfolio-link" style={styles.link}>
+            Portfolio link ↗
+          </Link>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>PROJECTS</Text>
+
+          <View style={styles.projectGrid}>
+            <View style={styles.projectCol}>
+              <Text style={styles.itemTitle}>AI Article Summariser</Text>
+              <Text style={styles.subText}>Nov 2025 – Dec 2025</Text>
+              <Text>
+                NLP-based summarization tool using transformer models.
+                Built with React, supports URL input and history storage.
+              </Text>
+            </View>
+
+            <View style={styles.projectCol}>
+              <Text style={styles.itemTitle}>Vaartalap</Text>
+              <Text style={styles.subText}>Jun 2025 – Present</Text>
+              <Text>
+                Real-time chat app with one-to-one messaging, video calls,
+                group chat, friend system, and status updates.
+              </Text>
+            </View>
           </View>
-          <Text style={styles.itemDesc}>{proj.description}</Text>
-          
-          {/* Tech Stack List */}
-          <View style={styles.techRow}>
-            {proj.tech.map((t, i) => (
-              <Text key={i} style={styles.techItem}>{t}</Text>
-            ))}
+
+          <View style={{ marginTop: 8 }} />
+
+          <View style={styles.projectGrid}>
+            <View style={styles.projectCol}>
+              <Text style={styles.itemTitle}>File Sharing Web App</Text>
+              <Text style={styles.subText}>Aug 2025 – Present</Text>
+              <Text>
+                Peer-to-peer file sharing using WebRTC and Socket.IO
+                without third-party storage.
+              </Text>
+            </View>
+
+            <View style={styles.projectCol}>
+              <Text style={styles.itemTitle}>GigaDB</Text>
+              <Text style={styles.subText}>Dec 2025 – Present</Text>
+              <Text>
+                Custom append-only database in Node.js with API key auth,
+                indexing, and REST access.
+              </Text>
+            </View>
           </View>
         </View>
-      ))}
 
-    </Page>
-  </Document>
-);
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>SKILLS</Text>
+
+          <View style={styles.skillRow}>
+            <Text style={styles.skill}>JavaScript</Text>
+            <Text style={styles.skill}>React</Text>
+            <Text style={styles.skill}>Node.js</Text>
+            <Text style={styles.skill}>Express.js</Text>
+            <Text style={styles.skill}>MongoDB</Text>
+            <Text style={styles.skill}>MySQL</Text>
+            <Text style={styles.skill}>Socket.IO</Text>
+            <Text style={styles.skill}>HTML</Text>
+            <Text style={styles.skill}>CSS</Text>
+          </View>
+        </View>
+
+      </Page>
+    </Document>
+  );
+}

@@ -7,10 +7,6 @@ import { Download, LoaderIcon, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 
-// 1. Import the PDF generator and your new Document
-import { pdf } from "@react-pdf/renderer";
-import { ResumeDocument } from "./ResumeDocument";
-
 const Hero = () => {
   const containerRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -25,54 +21,12 @@ const Hero = () => {
     });
   }, { scope: containerRef });
 
-  // 2. The Logic to Build and Download
-  const handleGenerateCV = async (e) => {
-    e.preventDefault(); // Stop default link behavior
+  const handleDownload = () => {
     setIsDownloading(true);
-
-    try {
-      // A. Fetch Data from your existing APIs
-      const [eduRes, projRes] = await Promise.all([
-        fetch("/api/education"),
-        fetch("/api/projects")
-      ]);
-
-      const eduData = await eduRes.json();
-      const projData = await projRes.json();
-
-      if (!eduData.success || !projData.success) throw new Error("Failed to fetch data");
-
-      // B. Sort Education (Current first logic)
-      const sortedEdu = eduData.data.sort((a, b) => {
-        const getYearValue = (yearStr) => {
-          if (!yearStr) return 0;
-          const str = yearStr.toLowerCase();
-          if (str.includes("present") || str.includes("current")) return 9999; 
-          return parseInt(str.replace(/\D/g, '')) || 0;
-        };
-        return getYearValue(b.endYear) - getYearValue(a.endYear);
-      });
-
-      // C. Generate PDF Blob
-      const blob = await pdf(
-        <ResumeDocument education={sortedEdu} projects={projData.data} />
-      ).toBlob();
-
-      // D. Force Download in Browser
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = "Rohit_Kumar_CV.pdf";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-    } catch (error) {
-      console.error("Error generating CV:", error);
-      alert("Could not generate CV at this time.");
-    } finally {
+    // Simple timeout to reset the button state after download starts
+    setTimeout(() => {
       setIsDownloading(false);
-    }
+    }, 2000);
   };
 
   return (
@@ -107,10 +61,11 @@ const Hero = () => {
           Contact Me
         </Link>
 
-        {/* 3. Attach the new handler */}
-        <button 
-          onClick={handleGenerateCV}
-          disabled={isDownloading}
+        {/* Reverted to static file download */}
+        <a 
+          href="/resume.pdf" 
+          download="Rohit_Kumar_Resume.pdf"
+          onClick={handleDownload}
           className={`flex items-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-900 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white rounded-lg font-medium transition-colors ${isDownloading ? 'cursor-wait opacity-80' : ''}`}
         >
           {isDownloading ? (
@@ -118,8 +73,8 @@ const Hero = () => {
           ) : (
             <Download size={20} />
           )}
-          <span>{isDownloading ? "Building CV..." : "Download CV"}</span>
-        </button>
+          <span>{isDownloading ? "Downloading..." : "Download CV"}</span>
+        </a>
       </div>
 
       <div className="hero-animate absolute bottom-8 flex flex-col items-center gap-2">

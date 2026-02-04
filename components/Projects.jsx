@@ -158,8 +158,7 @@ export default function Projects() {
                   </div>
                 </div>
 
-                {/* 👇 FIX: Added z-20 here so links sit ABOVE the z-10 content */}
-                <div className="absolute top-6 right-6 z-20 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-4 group-hover:translate-x-0">
+                <div className="absolute top-6 right-6 z-20 flex gap-2 opacity-100 translate-x-0 md:opacity-0 md:translate-x-4 md:group-hover:opacity-100 md:group-hover:translate-x-0 transition-all duration-300">
                   <a href={project.githubLink} target="_blank" className="p-2 bg-white dark:bg-black rounded-full hover:scale-110 transition-transform shadow-md border border-gray-100 dark:border-gray-800">
                     <Github size={18} className="text-gray-900 dark:text-white" />
                   </a>

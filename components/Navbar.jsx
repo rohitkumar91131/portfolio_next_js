@@ -8,7 +8,12 @@ const links = [
   { href: "#contact", label: "Contact" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ resumeUrl = "/resume.pdf" }) {
+  const isExternal = /^https?:\/\//i.test(resumeUrl);
+  const resumeProps = isExternal
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : { download: "Rohit_Kumar_Resume.pdf" };
+
   return (
     <header data-nav className="fixed inset-x-0 top-0 z-40">
       <nav className="shell flex items-center justify-between py-6" aria-label="Primary">
@@ -30,8 +35,8 @@ export default function Navbar() {
             </Link>
           ))}
           <a
-            href="/resume.pdf"
-            download="Rohit_Kumar_Resume.pdf"
+            href={resumeUrl}
+            {...resumeProps}
             className="label link-line transition-colors hover:text-ink"
           >
             Resume
@@ -41,7 +46,7 @@ export default function Navbar() {
 
         <div className="flex items-center gap-5 md:hidden">
           <ThemeToggle />
-          <MobileNav links={links} />
+          <MobileNav links={links} resumeUrl={resumeUrl} />
         </div>
       </nav>
     </header>

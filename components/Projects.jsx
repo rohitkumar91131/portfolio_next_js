@@ -6,6 +6,7 @@ import SectionHeader from "./SectionHeader";
 function ProjectRow({ project, index }) {
   const number = String(index + 1).padStart(2, "0");
   const detailHref = `/${encodeURIComponent(project.title)}`;
+  const meta = [project.type, project.category].filter(Boolean).join(" · ");
 
   return (
     <Reveal>
@@ -21,6 +22,7 @@ function ProjectRow({ project, index }) {
           <p className="label col-span-2 pt-2 md:col-span-1">{number}</p>
 
           <div className="col-span-10 md:col-span-7 lg:col-span-8">
+            {meta && <p className="label mb-3">{meta}</p>}
             <h3 className="font-display text-[clamp(1.9rem,4vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.025em] transition-transform duration-500 ease-out group-hover:translate-x-3">
               {project.title}
             </h3>

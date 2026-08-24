@@ -3,11 +3,14 @@ import { NextResponse } from 'next/server';
 export function middleware(request) {
     const path = request.nextUrl.pathname;
 
-    // Protect Admin Dashboard and Edit Routes
+    // Protect Admin Dashboard and Management Routes
     if (
         path.startsWith('/admin/dashboard') ||
-        path.startsWith('/admin/edit') ||
-        path.startsWith('/admin/experience')
+        path.startsWith('/admin/projects') ||
+        path.startsWith('/admin/experience') ||
+        path.startsWith('/admin/education') ||
+        path.startsWith('/admin/resumes') ||
+        path.startsWith('/admin/versions')
     ) {
         const adminToken = request.cookies.get('admin_token');
 
@@ -22,7 +25,10 @@ export function middleware(request) {
 export const config = {
     matcher: [
         '/admin/dashboard/:path*',
-        '/admin/edit/:path*',
+        '/admin/projects/:path*',
         '/admin/experience/:path*',
+        '/admin/education/:path*',
+        '/admin/resumes/:path*',
+        '/admin/versions/:path*',
     ],
 };

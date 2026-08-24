@@ -5,7 +5,7 @@ import CopyEmail from "./CopyEmail";
 
 const email = "rk34190100@gmail.com";
 
-export default function Contact({ index = "05" }) {
+export default function Contact({ index = "05", resumeUrl = "/resume.pdf" }) {
   return (
     <section id="contact" className="section-pad">
       <div className="shell">
@@ -40,15 +40,14 @@ export default function Contact({ index = "05" }) {
             {[
               { href: "https://www.linkedin.com/in/rohit-kumar-114037328/", label: "LinkedIn" },
               { href: "https://github.com/rohitkumar91131", label: "GitHub" },
-              { href: "/resume.pdf", label: "Resume", download: true },
+              { href: resumeUrl, label: "Resume" },
             ].map((link, i) => (
               <Reveal key={link.label} delay={0.08 * i} y={16}>
                 <a
                   href={link.href}
-                  {...(link.download ? { download: "Rohit_Kumar_Resume.pdf" } : {})}
                   {...(link.href.startsWith("http")
                     ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
+                    : { download: "Rohit_Kumar_Resume.pdf" })}
                   className="group inline-flex items-center gap-2 font-display text-2xl font-medium tracking-tight transition-transform duration-300 hover:translate-x-2 md:text-3xl"
                 >
                   {link.label}

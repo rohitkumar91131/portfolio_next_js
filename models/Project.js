@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { PROJECT_TYPES, PROJECT_CATEGORIES } from "@/lib/constants";
 
 const ProjectSchema = new mongoose.Schema({
   title: {
@@ -11,21 +12,21 @@ const ProjectSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  type: {
+    type: String,
+    enum: [...PROJECT_TYPES, ""],
+    default: "",
+  },
+  category: {
+    type: String,
+    enum: [...PROJECT_CATEGORIES, ""],
+    default: "",
+  },
   tech: [{
     type: String,
     trim: true,
     required: true
   }],
-  iconName: {
-    type: String,
-    required: true,
-    enum: ["Video", "Database", "Code", "Terminal", "ExternalLink", "Layout"],
-    default: "Code"
-  },
-  color: {
-    type: String,
-    default: "bg-gray-50/50 dark:bg-gray-900/20",
-  },
   githubLink: {
     type: String,
     trim: true,
@@ -35,6 +36,18 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     trim: true,
     default: "",
+  },
+  featured: {
+    type: Boolean,
+    default: false,
+  },
+  archived: {
+    type: Boolean,
+    default: false,
+  },
+  order: {
+    type: Number,
+    default: 0,
   },
   createdAt: {
     type: Date,

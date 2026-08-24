@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
-export default function MobileNav({ links }) {
+export default function MobileNav({ links, resumeUrl = "/resume.pdf" }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -54,13 +54,13 @@ export default function MobileNav({ links }) {
           </div>
 
           <nav className="flex flex-1 flex-col justify-center gap-8" aria-label="Mobile">
-            {[...links, { href: "/resume.pdf", label: "Resume", download: true }].map(
+            {[...links, { href: resumeUrl, label: "Resume", external: true }].map(
               (link, i) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  {...(link.download
-                    ? { download: "Rohit_Kumar_Resume.pdf" }
+                  {...(link.external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
                   onClick={() => setOpen(false)}
                   className="group flex items-baseline gap-4"

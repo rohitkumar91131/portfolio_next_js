@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import { splitBulletPoints } from "@/lib/constants";
 import Reveal from "./animations/Reveal";
 import SectionHeader from "./SectionHeader";
 
@@ -23,6 +24,7 @@ const getDateRange = (item) => {
 function ExperienceRow({ item }) {
   const range = getDateRange(item);
   const meta = [item.location, item.employmentType].filter(Boolean).join(" · ");
+  const points = splitBulletPoints(item.responsibilities);
 
   return (
     <li className="border-b border-line">
@@ -64,14 +66,14 @@ function ExperienceRow({ item }) {
               </p>
             )}
 
-            {item.responsibilities?.length > 0 && (
+            {points.length > 0 && (
               <ul className="mt-4 max-w-xl space-y-1.5">
-                {item.responsibilities.map((entry, i) => (
+                {points.map((point, i) => (
                   <li key={i} className="flex gap-3 text-sm leading-relaxed text-muted">
                     <span aria-hidden="true" className="text-faint">
                       –
                     </span>
-                    {entry}
+                    {point}
                   </li>
                 ))}
               </ul>

@@ -15,11 +15,10 @@ import {
   buildStack,
 } from "@/lib/data";
 
-// Portfolio data is managed live through the admin panel,
-// so the page renders on the server with fresh data per request.
-export const dynamic = "force-dynamic";
-
-export default async function Home() {
+// The "current" version intentionally tracks the live homepage design.
+// When a future redesign supersedes it, freeze a copy under a new slug
+// in versions/ and point the registry at it.
+export default async function CurrentSite() {
   const [projects, education, experiences, primaryResume] = await Promise.all([
     getProjects(),
     getEducation(),
@@ -27,15 +26,12 @@ export default async function Home() {
     getPrimaryResume(),
   ]);
 
-  // Featured active projects first; fall back to all active projects
-  // so the section never empties out for legacy data.
   const featured = projects.filter((p) => p.featured);
   const visibleProjects = featured.length > 0 ? featured : projects;
 
   const stack = buildStack(projects);
   const resumeUrl = primaryResume?.resumeUrl || "/resume.pdf";
 
-  // Number only the sections that actually render.
   let n = 0;
   const num = () => String(++n).padStart(2, "0");
 

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import { Plus, Trash2 } from "lucide-react";
-import { EMPLOYMENT_TYPES } from "@/lib/constants";
+import { EMPLOYMENT_TYPES, splitBulletPoints } from "@/lib/constants";
 
 const TECH_OPTIONS = [
   "React",
@@ -69,20 +69,20 @@ export const emptyExperience = () => ({
   responsibilities: [""],
   technologies: [],
   companyUrl: "",
-  isVisible: true,
-  displayOrder: 0,
 });
 
 // Normalizes an API experience document into form state.
+// Responsibilities may be bullet-joined strings — split them into
+// separate inputs for editing.
 export const toFormData = (data) => ({
   ...emptyExperience(),
   ...data,
   startDate: toDateInput(data.startDate),
   endDate: data.endDate ? toDateInput(data.endDate) : "",
-  responsibilities:
-    Array.isArray(data.responsibilities) && data.responsibilities.length > 0
-      ? [...data.responsibilities]
-      : [""],
+  responsibilities: (() => {
+    const points = splitBulletPoints(data.responsibilities);
+    return points.length > 0 ? points : [""];
+  })(),
   technologies: Array.isArray(data.technologies) ? [...data.technologies] : [],
 });
 
@@ -113,8 +113,6 @@ export const toPayload = (data) => ({
   responsibilities: data.responsibilities.map((r) => r.trim()).filter(Boolean),
   technologies: data.technologies,
   companyUrl: data.companyUrl.trim(),
-  isVisible: data.isVisible,
-  displayOrder: Number(data.displayOrder) || 0,
 });
 
 export default function ExperienceForm({ formData, setFormData, error, onSubmit, submitButton }) {
@@ -258,17 +256,7 @@ export default function ExperienceForm({ formData, setFormData, error, onSubmit,
           <label className={labelClass}>Company URL</label>
           <input name="companyUrl" value={formData.companyUrl} onChange={handleChange} className={inputClass} placeholder="https://company.com" />
         </div>
-        <div>
-          <label className={labelClass}>Display Order</label>
-          <input type="number" name="displayOrder" value={formData.displayOrder} onChange={handleChange} className={inputClass} placeholder="0" />
-          <p className="text-xs text-gray-500 mt-1">Lower numbers appear first.</p>
-        </div>
       </div>
-
-      <label className="flex items-center gap-2 text-sm">
-        <input type="checkbox" name="isVisible" checked={formData.isVisible} onChange={handleChange} />
-        Visible on the public site
-      </label>
 
       {submitButton}
     </form>

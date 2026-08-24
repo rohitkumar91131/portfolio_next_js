@@ -30,7 +30,7 @@ const iconMap = {
 };
 
 // Frozen v1 project cards — reconstructed from the original design.
-const OriginalProjectCard = ({ project }) => {
+const OriginalProjectCard = ({ project, basePath = "" }) => {
   const cardRef = useRef(null);
   const glowRef = useRef(null);
 
@@ -69,7 +69,7 @@ const OriginalProjectCard = ({ project }) => {
       className={`project-card h-full flex flex-col group relative p-8 rounded-3xl border border-gray-200 dark:border-gray-800 hover:border-blue-500/50 transition-colors duration-300 ${project.color || "bg-gray-50 dark:bg-gray-900"} overflow-hidden`}
       style={{ transformStyle: "preserve-3d" }}
     >
-      <Link href={`/${encodeURIComponent(project.title)}`} className="absolute inset-0 z-0" aria-label={`View details for ${project.title}`} />
+      <Link href={`${basePath}/${encodeURIComponent(project.title)}`} className="absolute inset-0 z-0" aria-label={`View details for ${project.title}`} />
 
       <div
         ref={glowRef}
@@ -127,7 +127,7 @@ const OriginalProjectCard = ({ project }) => {
   );
 };
 
-export default function OriginalProjects({ projects = [] }) {
+export default function OriginalProjects({ projects = [], basePath = "" }) {
   const containerRef = useRef(null);
 
   useGSAP(() => {
@@ -169,7 +169,7 @@ export default function OriginalProjects({ projects = [] }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <div key={project.id || index} className="project-card-wrapper h-full">
-              <OriginalProjectCard project={project} />
+              <OriginalProjectCard project={project} basePath={basePath} />
             </div>
           ))}
         </div>

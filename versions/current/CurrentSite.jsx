@@ -18,7 +18,7 @@ import {
 // The "current" version intentionally tracks the live homepage design.
 // When a future redesign supersedes it, freeze a copy under a new slug
 // in versions/ and point the registry at it.
-export default async function CurrentSite() {
+export default async function CurrentSite({ basePath = "" }) {
   const [projects, education, experiences, primaryResume] = await Promise.all([
     getProjects(),
     getEducation(),
@@ -41,7 +41,7 @@ export default async function CurrentSite() {
       <main>
         <Hero />
         <About index={num()} />
-        <Projects projects={visibleProjects} index={num()} />
+        <Projects projects={visibleProjects} index={num()} basePath={basePath} />
         <Experience items={experiences} index={num()} />
         <Stack items={stack} index={num()} />
         <Education items={education} index={num()} />

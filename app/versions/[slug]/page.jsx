@@ -31,5 +31,5 @@ export default async function VersionSitePage({ params }) {
   // Metadata exists for this slug but no frozen site build is registered.
   if (!Site) notFound();
 
-  return <Site />;
+  return <Site basePath={`/versions/${version.slug}`} />;
 }

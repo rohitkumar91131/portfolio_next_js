@@ -3,9 +3,9 @@ import { ArrowUpRight } from "lucide-react";
 import Reveal from "./animations/Reveal";
 import SectionHeader from "./SectionHeader";
 
-function ProjectRow({ project, index }) {
+function ProjectRow({ project, index, basePath = "" }) {
   const number = String(index + 1).padStart(2, "0");
-  const detailHref = `/${encodeURIComponent(project.title)}`;
+  const detailHref = `${basePath}/${encodeURIComponent(project.title)}`;
   const meta = [project.type, project.category].filter(Boolean).join(" · ");
 
   return (
@@ -69,7 +69,7 @@ function ProjectRow({ project, index }) {
   );
 }
 
-export default function Projects({ projects = [], index = "02" }) {
+export default function Projects({ projects = [], index = "02", basePath = "" }) {
   return (
     <section id="work" className="section-pad">
       <div className="shell">
@@ -92,7 +92,7 @@ export default function Projects({ projects = [], index = "02" }) {
           ) : (
             <>
               {projects.map((project, i) => (
-                <ProjectRow key={project.id || i} project={project} index={i} />
+                <ProjectRow key={project.id || i} project={project} index={i} basePath={basePath} />
               ))}
               <div className="border-t border-line" />
             </>

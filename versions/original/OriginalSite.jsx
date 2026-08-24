@@ -10,7 +10,7 @@ const GITHUB_URL = "https://github.com/rohitkumar91131";
 
 // Frozen v1 site — the original portfolio design, isolated from the
 // current homepage components so future redesigns cannot alter it.
-export default async function OriginalSite({ resumeUrl = "/resume.pdf" }) {
+export default async function OriginalSite({ resumeUrl = "/resume.pdf", basePath = "" }) {
   const [projects, education] = await Promise.all([
     getProjects(),
     getEducation(),
@@ -19,7 +19,7 @@ export default async function OriginalSite({ resumeUrl = "/resume.pdf" }) {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 [font-family:ui-sans-serif,system-ui,-apple-system,sans-serif]">
       <OriginalHero resumeUrl={resumeUrl} />
-      <OriginalProjects projects={projects} />
+      <OriginalProjects projects={projects} basePath={basePath} />
       <OriginalEducation items={education} />
       <OriginalContact
         email={EMAIL}

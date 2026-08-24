@@ -65,6 +65,15 @@ export default function ResumeStudio() {
         const featured = active.filter((p) => p.featured);
         const visibleProjects = featured.length > 0 ? featured : active;
 
+        // Newest qualification first (B.Tech before school entries).
+        const rank = (value = "") =>
+          /present|current|now/i.test(value)
+            ? 9999
+            : parseInt(String(value).replace(/\D/g, ""), 10) || 0;
+        const education = [...data.education].sort(
+          (a, b) => rank(b.endYear) - rank(a.endYear)
+        );
+
         const blob = await pdf(
           <ResumeDocument
             profile={{
@@ -77,7 +86,7 @@ export default function ResumeStudio() {
             }}
             summary={SUMMARY}
             experience={data.experience.filter((e) => e.isVisible)}
-            education={data.education}
+            education={education}
             projects={visibleProjects}
             stack={buildStack(active)}
           />

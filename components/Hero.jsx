@@ -26,7 +26,7 @@ export default function Hero() {
           <span className="block overflow-hidden pb-[0.08em] pl-[10vw]">
             <span data-hero-line className="block text-[clamp(4rem,15vw,13.5rem)]">
               Kumar
-              <span className="font-editorial ml-[0.15em] hidden align-top text-[0.22em] font-normal normal-case italic tracking-normal text-muted sm:inline-block">
+              <span className="font-editorial ml-[0.15em] inline-block align-top text-[0.22em] font-normal normal-case italic tracking-normal text-muted">
                 (dev)
               </span>
             </span>

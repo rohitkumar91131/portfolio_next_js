@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     letterSpacing: 1,
+    marginBottom: 8,
   },
   title: {
     fontSize: 10.5,
@@ -181,12 +182,10 @@ export default function ResumeDocument({
             <SectionTitle>PROJECTS</SectionTitle>
             {projects.map((project) => (
               <View key={project.id || project.title} style={styles.entry} wrap={false}>
-                <View style={styles.row}>
-                  <Text style={styles.itemTitle}>{project.title}</Text>
-                  {project.tech?.length > 0 && (
-                    <Text style={styles.itemMeta}>{project.tech.join(", ")}</Text>
-                  )}
-                </View>
+                <Text style={styles.itemTitle}>{project.title}</Text>
+                {project.tech?.length > 0 && (
+                  <Text style={styles.tech}>{project.tech.join(", ")}</Text>
+                )}
                 {project.description ? (
                   <Text style={styles.body}>{project.description}</Text>
                 ) : null}

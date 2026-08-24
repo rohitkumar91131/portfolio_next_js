@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import AdminNav from "@/components/admin/AdminNav";
-import { Edit, Plus, Trash2, ExternalLink, Star } from "lucide-react";
+import { Edit, Plus, Trash2, ExternalLink, Star, FileText } from "lucide-react";
 
 export default function AdminResumes() {
     const [resumes, setResumes] = useState([]);
@@ -59,12 +59,20 @@ export default function AdminResumes() {
                             {resumes.length} resumes · the primary one is used by the public Download Resume button
                         </p>
                     </div>
-                    <Link
-                        href="/admin/resumes/add"
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
-                    >
-                        <Plus size={18} /> Add Resume
-                    </Link>
+                    <div className="flex items-center gap-2">
+                        <Link
+                            href="/admin/resumes/create"
+                            className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                        >
+                            <FileText size={18} /> Create Resume
+                        </Link>
+                        <Link
+                            href="/admin/resumes/add"
+                            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
+                        >
+                            <Plus size={18} /> Add Resume
+                        </Link>
+                    </div>
                 </div>
 
                 {loading ? (

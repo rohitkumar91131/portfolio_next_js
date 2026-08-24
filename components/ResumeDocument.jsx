@@ -1,188 +1,226 @@
-import { Document, Page, Text, View, StyleSheet, Link } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { splitBulletPoints } from "@/lib/constants";
 
-const blue = '#1f6feb';
+// ATS-friendly resume generated from live portfolio data.
+// Rules: single column, standard headings, Helvetica, real text only —
+// no icons, images, tables or multi-column grids for parsers to trip on.
+
+const INK = "#111111";
+const MUTED = "#444444";
 
 const styles = StyleSheet.create({
   page: {
-    padding: 32,
+    padding: 36,
     fontSize: 10,
-    fontFamily: 'Helvetica'
+    fontFamily: "Helvetica",
+    color: INK,
+    lineHeight: 1.45,
   },
-
-  header: {
+  name: {
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: "bold",
+    letterSpacing: 1,
   },
-
+  title: {
+    fontSize: 10.5,
+    color: MUTED,
+    marginTop: 2,
+  },
   contact: {
-    marginTop: 4,
-    color: '#555'
+    fontSize: 9.5,
+    color: MUTED,
+    marginTop: 5,
   },
-
   divider: {
-    marginVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb'
+    borderBottomColor: "#999999",
+    marginTop: 10,
+    marginBottom: 2,
   },
-
   section: {
-    marginTop: 12
+    marginTop: 12,
   },
-
   sectionTitle: {
     fontSize: 11,
-    fontWeight: 'bold',
-    color: blue,
-    marginBottom: 6
+    fontWeight: "bold",
+    marginBottom: 6,
   },
-
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "baseline",
+  },
   itemTitle: {
+    fontSize: 10.5,
+    fontWeight: "bold",
+  },
+  itemMeta: {
+    fontSize: 9.5,
+    color: MUTED,
+  },
+  itemSub: {
     fontSize: 10,
-    fontWeight: 'bold'
+    color: MUTED,
+    marginBottom: 2,
   },
-
-  subText: {
-    color: '#555',
-    marginBottom: 4
+  bulletRow: {
+    flexDirection: "row",
+    marginBottom: 2,
+    paddingRight: 8,
   },
-
-  projectGrid: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+  bullet: {
+    width: 12,
   },
-
-  projectCol: {
-    width: '48%'
+  bulletText: {
+    flex: 1,
   },
-
-  link: {
-    color: blue,
-    textDecoration: 'none'
+  body: {
+    marginBottom: 2,
   },
-
-  skillRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap'
+  tech: {
+    fontSize: 9.5,
+    color: MUTED,
+    marginTop: 1,
   },
-
-  skill: {
-    width: '33%',
-    marginBottom: 4
-  }
+  entry: {
+    marginBottom: 8,
+  },
 });
 
-export default function InternshalaResume() {
+const SectionTitle = ({ children }) => (
+  <Text style={styles.sectionTitle}>{children}</Text>
+);
+
+const Bullet = ({ children }) => (
+  <View style={styles.bulletRow}>
+    <Text style={styles.bullet}>{"•"}</Text>
+    <Text style={styles.bulletText}>{children}</Text>
+  </View>
+);
+
+const formatMonth = (value) => {
+  if (!value) return "";
+  const date = new Date(value);
+  if (isNaN(date.getTime())) return String(value);
+  return date
+    .toLocaleDateString("en-GB", { month: "short", year: "numeric", timeZone: "UTC" });
+};
+
+const dateRange = (item) => {
+  const start = formatMonth(item.startDate);
+  if (item.isCurrent) return `${start} – Present`;
+  const end = formatMonth(item.endDate);
+  return end ? `${start} – ${end}` : start;
+};
+
+export default function ResumeDocument({
+  profile,
+  summary,
+  experience = [],
+  education = [],
+  projects = [],
+  stack = [],
+}) {
   return (
-    <Document>
-      <Page size="A4" style={styles.page}>
-
-        <Text style={styles.header}>Rohit Kumar</Text>
+    <Document
+      title={`${profile.name} — Resume`}
+      author={profile.name}
+      subject="Resume"
+    >
+      <Page size="A4" style={styles.page} wrap>
+        <Text style={styles.name}>{profile.name.toUpperCase()}</Text>
+        <Text style={styles.title}>Software Developer</Text>
         <Text style={styles.contact}>
-          rk34190100@gmail.com | +91 9113190285 | Kolkata
+          {[
+            profile.email,
+            profile.phone,
+            profile.location,
+            profile.linkedin?.replace(/^https?:\/\/(www\.)?/, ""),
+            profile.github?.replace(/^https?:\/\/(www\.)?/, ""),
+          ]
+            .filter(Boolean)
+            .join("  |  ")}
         </Text>
-
         <View style={styles.divider} />
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>CAREER OBJECTIVE</Text>
-          <Text>
-            Enthusiastic B.Tech 3rd year student with hands-on experience in web development,
-            seeking industry exposure to build scalable and impactful products.
-          </Text>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>EDUCATION</Text>
-
-          <Text style={styles.itemTitle}>
-            B.Tech, Chemical Technology (2023 – 2027)
-          </Text>
-          <Text style={styles.subText}>University of Calcutta</Text>
-
-          <Text style={styles.itemTitle}>
-            Senior Secondary (XII) – 2022
-          </Text>
-          <Text style={styles.subText}>
-            Purnea College, Purnea | 67.80%
-          </Text>
-
-          <Text style={styles.itemTitle}>
-            Secondary (X) – 2020
-          </Text>
-          <Text style={styles.subText}>
-            Shri Darwari Roy High School | 80%
-          </Text>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>PORTFOLIO</Text>
-          <Link src="https://your-portfolio-link" style={styles.link}>
-            Portfolio link ↗
-          </Link>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>PROJECTS</Text>
-
-          <View style={styles.projectGrid}>
-            <View style={styles.projectCol}>
-              <Text style={styles.itemTitle}>AI Article Summariser</Text>
-              <Text style={styles.subText}>Nov 2025 – Dec 2025</Text>
-              <Text>
-                NLP-based summarization tool using transformer models.
-                Built with React, supports URL input and history storage.
-              </Text>
-            </View>
-
-            <View style={styles.projectCol}>
-              <Text style={styles.itemTitle}>Vaartalap</Text>
-              <Text style={styles.subText}>Jun 2025 – Present</Text>
-              <Text>
-                Real-time chat app with one-to-one messaging, video calls,
-                group chat, friend system, and status updates.
-              </Text>
-            </View>
+        {summary ? (
+          <View style={styles.section}>
+            <SectionTitle>SUMMARY</SectionTitle>
+            <Text style={styles.body}>{summary}</Text>
           </View>
+        ) : null}
 
-          <View style={{ marginTop: 8 }} />
-
-          <View style={styles.projectGrid}>
-            <View style={styles.projectCol}>
-              <Text style={styles.itemTitle}>File Sharing Web App</Text>
-              <Text style={styles.subText}>Aug 2025 – Present</Text>
-              <Text>
-                Peer-to-peer file sharing using WebRTC and Socket.IO
-                without third-party storage.
-              </Text>
-            </View>
-
-            <View style={styles.projectCol}>
-              <Text style={styles.itemTitle}>GigaDB</Text>
-              <Text style={styles.subText}>Dec 2025 – Present</Text>
-              <Text>
-                Custom append-only database in Node.js with API key auth,
-                indexing, and REST access.
-              </Text>
-            </View>
+        {experience.length > 0 && (
+          <View style={styles.section}>
+            <SectionTitle>EXPERIENCE</SectionTitle>
+            {experience.map((item) => (
+              <View key={item.id || item.role} style={styles.entry} wrap={false}>
+                <View style={styles.row}>
+                  <Text style={styles.itemTitle}>
+                    {item.role}
+                    {item.employmentType ? ` — ${item.employmentType}` : ""}
+                  </Text>
+                  <Text style={styles.itemMeta}>{dateRange(item)}</Text>
+                </View>
+                <Text style={styles.itemSub}>
+                  {[item.companyName, item.location].filter(Boolean).join(", ")}
+                </Text>
+                {item.description ? (
+                  <Text style={styles.body}>{item.description}</Text>
+                ) : null}
+                {splitBulletPoints(item.responsibilities).map((point, i) => (
+                  <Bullet key={i}>{point}</Bullet>
+                ))}
+              </View>
+            ))}
           </View>
-        </View>
+        )}
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>SKILLS</Text>
-
-          <View style={styles.skillRow}>
-            <Text style={styles.skill}>JavaScript</Text>
-            <Text style={styles.skill}>React</Text>
-            <Text style={styles.skill}>Node.js</Text>
-            <Text style={styles.skill}>Express.js</Text>
-            <Text style={styles.skill}>MongoDB</Text>
-            <Text style={styles.skill}>MySQL</Text>
-            <Text style={styles.skill}>Socket.IO</Text>
-            <Text style={styles.skill}>HTML</Text>
-            <Text style={styles.skill}>CSS</Text>
+        {projects.length > 0 && (
+          <View style={styles.section}>
+            <SectionTitle>PROJECTS</SectionTitle>
+            {projects.map((project) => (
+              <View key={project.id || project.title} style={styles.entry} wrap={false}>
+                <View style={styles.row}>
+                  <Text style={styles.itemTitle}>{project.title}</Text>
+                  {project.tech?.length > 0 && (
+                    <Text style={styles.itemMeta}>{project.tech.join(", ")}</Text>
+                  )}
+                </View>
+                {project.description ? (
+                  <Text style={styles.body}>{project.description}</Text>
+                ) : null}
+              </View>
+            ))}
           </View>
-        </View>
+        )}
 
+        {education.length > 0 && (
+          <View style={styles.section}>
+            <SectionTitle>EDUCATION</SectionTitle>
+            {education.map((item) => (
+              <View key={item.id || item.degree} style={styles.entry} wrap={false}>
+                <View style={styles.row}>
+                  <Text style={styles.itemTitle}>{item.degree}</Text>
+                  <Text style={styles.itemMeta}>
+                    {item.startYear} – {item.endYear}
+                  </Text>
+                </View>
+                <Text style={styles.itemSub}>{item.institution}</Text>
+                {item.description ? (
+                  <Text style={styles.body}>{item.description}</Text>
+                ) : null}
+              </View>
+            ))}
+          </View>
+        )}
+
+        {stack.length > 0 && (
+          <View style={styles.section}>
+            <SectionTitle>SKILLS</SectionTitle>
+            <Text style={styles.body}>{stack.join(" • ")}</Text>
+          </View>
+        )}
       </Page>
     </Document>
   );

@@ -1,144 +1,83 @@
-"use client";
+import HeroAnimation from "./animations/HeroAnimation";
 
-import { useRef, useState, useEffect } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { Download, LoaderIcon, ChevronDown } from "lucide-react"; 
-import Link from "next/link";
-import ThemeToggle from "./ThemeToggle";
+const stack = ["React", "Next.js", "Node.js", "WebRTC"];
 
-const Hero = () => {
-  const containerRef = useRef(null);
-  const textRef = useRef(null);
-  const [isDownloading, setIsDownloading] = useState(false);
-
-  useGSAP(() => {
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-    // Initial reveal animation
-    tl.from(".hero-text-char", {
-      y: 100,
-      opacity: 0,
-      rotateX: -90,
-      stagger: 0.02,
-      duration: 1,
-    })
-    .from(".hero-element", {
-      y: 50,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.1,
-    }, "-=0.5");
-
-    // Parallax Effect
-    const handleMouseMove = (e) => {
-      const { clientX, clientY } = e;
-      const x = (clientX / window.innerWidth - 0.5) * 20;
-      const y = (clientY / window.innerHeight - 0.5) * 20;
-
-      gsap.to(".parallax-bg", {
-        x: x,
-        y: y,
-        duration: 1,
-        ease: "power2.out"
-      });
-      
-      gsap.to(".parallax-fg", {
-        x: -x * 1.5,
-        y: -y * 1.5,
-        duration: 1,
-        ease: "power2.out"
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-
-  }, { scope: containerRef });
-
-  const handleDownload = () => {
-    setIsDownloading(true);
-    setTimeout(() => {
-      setIsDownloading(false);
-    }, 2000);
-  };
-
-  // Helper to split text into chars
-  const SplitText = ({ children, className }) => {
-    return (
-      <span className={`inline-block overflow-hidden ${className}`}>
-        {children.split("").map((char, i) => (
-          <span key={i} className="hero-text-char inline-block whitespace-pre">
-            {char}
-          </span>
-        ))}
-      </span>
-    );
-  };
-
+export default function Hero() {
   return (
-    <section 
-      ref={containerRef} 
-      className="relative flex flex-col items-center justify-center h-screen px-4 text-center transition-colors duration-300 overflow-hidden"
-    >
-      {/* Background Decor */}
-      <div className="parallax-bg absolute top-20 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
-      <div className="parallax-bg absolute bottom-20 right-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
+    <section className="relative flex min-h-svh flex-col justify-between pb-10 pt-28">
+      <HeroAnimation />
 
-      <div className="absolute top-6 right-6 z-50">
-        <ThemeToggle />
-      </div>
-
-      <h1 className="text-5xl md:text-7xl font-bold mb-6 perspective-1000">
-        <div className="overflow-hidden">
-          <SplitText className="text-gray-900 dark:text-white">Hi, I’m </SplitText> 
-          <span className="text-blue-600 dark:text-blue-500 inline-block">
-             <SplitText>Rohit Kumar</SplitText>
-          </span>
+      <div className="shell w-full">
+        {/* Meta strip */}
+        <div data-hero-meta className="flex items-baseline justify-between gap-4">
+          <p className="label">Portfolio — 2026</p>
+          <p className="label text-right">Software Developer</p>
         </div>
-      </h1>
-
-      <div className="hero-element text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl">
-        I build modern, scalable web apps with <span className="font-semibold text-black dark:text-white">React, Next.js, Node.js & WebRTC</span>.
       </div>
 
-      <div className="hero-element flex flex-wrap justify-center gap-4 relative z-10">
-        <Link 
-          href="#projects"
-          className="parallax-fg px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-transform hover:scale-105"
-        >
-          View My Work
-        </Link>
-        
-        <Link 
-          href="#contact"
-          className="parallax-fg px-6 py-3 border border-gray-300 text-gray-700 hover:border-black hover:text-black dark:border-gray-500 dark:text-gray-300 dark:hover:border-white dark:hover:text-white rounded-lg font-medium transition-transform hover:scale-105"
-        >
-          Contact Me
-        </Link>
-
-        <a 
-          href="/resume.pdf" 
-          download="Rohit_Kumar_Resume.pdf"
-          onClick={handleDownload}
-          className={`parallax-fg flex items-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-900 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white rounded-lg font-medium transition-transform hover:scale-105 ${isDownloading ? 'cursor-wait opacity-80' : ''}`}
-        >
-          {isDownloading ? (
-            <LoaderIcon size={20} className="animate-spin" />
-          ) : (
-            <Download size={20} />
-          )}
-          <span>{isDownloading ? "Downloading..." : "Download CV"}</span>
-        </a>
+      {/* Name */}
+      <div className="shell mt-[8vh] w-full">
+        <h1 className="select-none font-display font-semibold uppercase leading-[0.84] tracking-[-0.035em]">
+          <span className="block overflow-hidden pb-[0.06em]">
+            <span data-hero-line className="block text-[clamp(4rem,15vw,13.5rem)]">
+              Rohit
+            </span>
+          </span>
+          <span className="block overflow-hidden pb-[0.08em] pl-[10vw]">
+            <span data-hero-line className="block text-[clamp(4rem,15vw,13.5rem)]">
+              Kumar
+              <span className="font-editorial ml-[0.15em] hidden align-top text-[0.22em] font-normal normal-case italic tracking-normal text-muted sm:inline-block">
+                (dev)
+              </span>
+            </span>
+          </span>
+        </h1>
       </div>
 
-      <div className="hero-element absolute bottom-8 flex flex-col items-center gap-2">
-        <span className="text-sm text-gray-500 dark:text-gray-400 font-medium tracking-wide">Scroll Down</span>
-        <ChevronDown size={24} className="text-gray-500 dark:text-gray-400 animate-bounce" />
+      {/* Statement */}
+      <div className="shell mt-auto pt-[10vh] w-full">
+        <div className="grid grid-cols-12 gap-y-10">
+          <div className="col-span-12 md:col-span-5 md:col-start-6 lg:col-span-4 lg:col-start-7">
+            <p data-hero-meta className="max-w-md text-xl leading-snug md:text-2xl">
+              Building modern web applications and{" "}
+              <em className="font-editorial">real-time systems</em> — from
+              interface to infrastructure.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="shell w-full">
+        <div className="mt-[7vh] flex items-end justify-between border-t border-line pt-6">
+          <ul data-hero-meta className="label flex flex-wrap gap-x-2 gap-y-1">
+            {stack.map((item, i) => (
+              <li key={item}>
+                {item}
+                {i < stack.length - 1 && (
+                  <span aria-hidden="true" className="ml-2 opacity-50">
+                    /
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href="#about"
+            data-hero-scroll
+            className="group flex items-center gap-3"
+            aria-label="Scroll to about section"
+          >
+            <span className="label transition-colors group-hover:text-ink">(Scroll)</span>
+            <span
+              data-scroll-line
+              className="hidden h-10 w-px bg-faint sm:block"
+              aria-hidden="true"
+            />
+          </a>
+        </div>
       </div>
     </section>
   );
-};
-
-export default Hero;
+}

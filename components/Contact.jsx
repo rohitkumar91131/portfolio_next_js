@@ -1,146 +1,73 @@
-"use client";
+import { ArrowUpRight } from "lucide-react";
+import Reveal from "./animations/Reveal";
+import SectionHeader from "./SectionHeader";
+import CopyEmail from "./CopyEmail";
 
-import { useRef, useState } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Linkedin, Github, Mail, Copy, Check, ArrowUpRight } from "lucide-react";
+const email = "rk34190100@gmail.com";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
-const Contact = () => {
-  const containerRef = useRef(null);
-  const [copied, setCopied] = useState(false);
-
-  const email = "rk34190100@gmail.com";
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  useGSAP(() => {
-    const items = gsap.utils.toArray(".contact-item");
-
-    gsap.fromTo(items,
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        stagger: 0.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      }
-    );
-  }, { scope: containerRef });
-
+export default function Contact({ index = "05" }) {
   return (
-    <section ref={containerRef} className="py-20 px-4" id="contact">
-      <div className="max-w-4xl mx-auto">
+    <section id="contact" className="section-pad">
+      <div className="shell">
+        <SectionHeader index={index} title="Contact" />
 
-        <div className="contact-item mb-12 text-center">
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Get in Touch
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
-            Whether you have a project in mind, a question, or just want to say hi, I’m always open to discussing new opportunities.
+        <Reveal>
+          <p className="max-w-4xl font-display text-[clamp(2.5rem,6.5vw,6rem)] font-semibold leading-[1.02] tracking-[-0.03em]">
+            Have a project in{" "}
+            <em className="font-editorial font-normal normal-case italic">mind?</em>
           </p>
-        </div>
+        </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-          <div className="contact-item md:col-span-3 bg-white dark:bg-black p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm hover:border-blue-500 hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-32 bg-blue-500/5 rounded-full blur-3xl -mr-16 -mt-16 transition-all duration-500 group-hover:bg-blue-500/20 group-hover:scale-110"></div>
-
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="flex items-center gap-4">
-                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform duration-300">
-                  <Mail size={32} />
-                </div>
-                <div className="text-center md:text-left">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Email Me</h3>
-                  <p className="text-gray-500 dark:text-gray-400 break-all">{email}</p>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <a
-                  href={`mailto:${email}`}
-                  className="px-6 py-3 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-black font-medium hover:scale-105 active:scale-95 transition-all duration-200"
-                >
-                  Send Email
-                </a>
-                <button
-                  onClick={handleCopy}
-                  className="p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-gray-600 dark:text-gray-300 hover:scale-105 active:scale-95"
-                  title="Copy Email"
-                >
-                  {copied ? <Check size={20} className="text-green-500" /> : <Copy size={20} />}
-                </button>
-              </div>
-            </div>
+        <div className="mt-16 grid grid-cols-12 gap-x-6 gap-y-12 md:mt-24">
+          <div className="col-span-12 md:col-span-7 lg:col-span-8">
+            <Reveal>
+              <p className="text-lg leading-snug text-muted md:text-xl">
+                Let&apos;s build something worth remembering.
+              </p>
+              <a
+                href={`mailto:${email}`}
+                className="link-line mt-8 inline-block break-all text-[clamp(1.35rem,3.4vw,2.75rem)] tracking-tight"
+              >
+                {email}
+              </a>
+            </Reveal>
           </div>
 
-          <a
-            href="https://www.linkedin.com/in/rohit-kumar-114037328/"
-            target="_blank"
-            className="contact-item bg-white dark:bg-black p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm hover:border-blue-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col items-center text-center gap-4"
+          <nav
+            className="col-span-12 flex flex-col items-start gap-5 md:col-span-4 md:col-start-9 lg:col-span-3 lg:col-start-10"
+            aria-label="Social links"
           >
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-full text-blue-700 dark:text-blue-400 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
-              <Linkedin size={32} />
-            </div>
-            <div>
-              <h3 className="font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
-                LinkedIn <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Let's connect professionally</p>
-            </div>
-          </a>
+            {[
+              { href: "https://www.linkedin.com/in/rohit-kumar-114037328/", label: "LinkedIn" },
+              { href: "https://github.com/rohitkumar91131", label: "GitHub" },
+              { href: "/resume.pdf", label: "Resume", download: true },
+            ].map((link, i) => (
+              <Reveal key={link.label} delay={0.08 * i} y={16}>
+                <a
+                  href={link.href}
+                  {...(link.download ? { download: "Rohit_Kumar_Resume.pdf" } : {})}
+                  {...(link.href.startsWith("http")
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="group inline-flex items-center gap-2 font-display text-2xl font-medium tracking-tight transition-transform duration-300 hover:translate-x-2 md:text-3xl"
+                >
+                  {link.label}
+                  <ArrowUpRight
+                    size={20}
+                    strokeWidth={1.25}
+                    aria-hidden="true"
+                    className="opacity-40 transition-opacity group-hover:opacity-100"
+                  />
+                </a>
+              </Reveal>
+            ))}
+          </nav>
+        </div>
 
-          <a
-            href="https://github.com/rohitkumar91131"
-            target="_blank"
-            className="contact-item bg-white dark:bg-black p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm hover:border-gray-900 dark:hover:border-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col items-center text-center gap-4"
-          >
-            <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-900 dark:text-white group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
-              <Github size={32} />
-            </div>
-            <div>
-              <h3 className="font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
-                GitHub <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Check out my code</p>
-            </div>
-          </a>
-
-          <a
-            href="/resume.pdf"
-            download="Rohit_Kumar_Resume.pdf"
-            className="contact-item bg-white dark:bg-black p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm hover:border-purple-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col items-center text-center gap-4"
-          >
-            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-full text-purple-600 dark:text-purple-400 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
-              <Mail size={32} /> {/* Reusing Mail icon or import FileText if preferred */}
-            </div>
-            <div>
-              <h3 className="font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
-                Resume <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Download my CV</p>
-            </div>
-          </a>
-
+        <div className="mt-16 border-t border-line pt-6 md:mt-24">
+          <CopyEmail email={email} />
         </div>
       </div>
     </section>
   );
-};
-
-export default Contact;
+}

@@ -11,7 +11,7 @@ export default function Hero() {
         {/* Meta strip */}
         <div data-hero-meta className="flex items-baseline justify-between gap-4">
           <p className="label">Portfolio — 2026</p>
-          <p className="label text-right">Software Developer</p>
+          <p className="label text-right">Full Stack Developer</p>
         </div>
       </div>
 

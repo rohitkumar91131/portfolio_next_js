@@ -30,11 +30,11 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata = {
-  title: "Rohit Kumar — Software Developer",
+  title: "Rohit Kumar — Full Stack Developer",
   description:
     "Portfolio of Rohit Kumar, a software developer building modern web applications and real-time systems with React, Next.js, Node.js and WebRTC.",
   openGraph: {
-    title: "Rohit Kumar — Software Developer",
+    title: "Rohit Kumar — Full Stack Developer",
     description:
       "Building modern web applications and real-time systems with React, Next.js, Node.js and WebRTC.",
     type: "website",

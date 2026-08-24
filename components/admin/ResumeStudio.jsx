@@ -15,7 +15,7 @@ const LINKEDIN_URL = "https://www.linkedin.com/in/rohit-kumar-114037328/";
 const GITHUB_URL = "https://github.com/rohitkumar91131";
 
 const SUMMARY =
-  "Software developer building modern web applications and real-time systems — from React interfaces to Node.js services and WebRTC-based products.";
+  "Full stack developer building modern web applications and real-time systems — from React interfaces to Node.js services and WebRTC-based products.";
 
 export default function ResumeStudio() {
   const [data, setData] = useState(null);

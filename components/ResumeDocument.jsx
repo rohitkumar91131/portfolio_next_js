@@ -130,7 +130,7 @@ export default function ResumeDocument({
     >
       <Page size="A4" style={styles.page} wrap>
         <Text style={styles.name}>{profile.name.toUpperCase()}</Text>
-        <Text style={styles.title}>Software Developer</Text>
+        <Text style={styles.title}>Full Stack Developer</Text>
         <Text style={styles.contact}>
           {[
             profile.email,

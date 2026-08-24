@@ -4,7 +4,11 @@ export function middleware(request) {
     const path = request.nextUrl.pathname;
 
     // Protect Admin Dashboard and Edit Routes
-    if (path.startsWith('/admin/dashboard') || path.startsWith('/admin/edit')) {
+    if (
+        path.startsWith('/admin/dashboard') ||
+        path.startsWith('/admin/edit') ||
+        path.startsWith('/admin/experience')
+    ) {
         const adminToken = request.cookies.get('admin_token');
 
         if (!adminToken) {
@@ -16,5 +20,9 @@ export function middleware(request) {
 }
 
 export const config = {
-    matcher: ['/admin/dashboard/:path*', '/admin/edit/:path*'],
+    matcher: [
+        '/admin/dashboard/:path*',
+        '/admin/edit/:path*',
+        '/admin/experience/:path*',
+    ],
 };

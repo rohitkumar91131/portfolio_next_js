@@ -2,20 +2,27 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
+import Experience from "@/components/Experience";
 import Stack from "@/components/Stack";
 import Education from "@/components/Education";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import { getProjects, getEducation, buildStack } from "@/lib/data";
+import {
+  getProjects,
+  getEducation,
+  getExperiences,
+  buildStack,
+} from "@/lib/data";
 
 // Portfolio data is managed live through the admin panel,
 // so the page renders on the server with fresh data per request.
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [projects, education] = await Promise.all([
+  const [projects, education, experiences] = await Promise.all([
     getProjects(),
     getEducation(),
+    getExperiences(),
   ]);
   const stack = buildStack(projects);
 
@@ -30,6 +37,7 @@ export default async function Home() {
         <Hero />
         <About index={num()} />
         <Projects projects={projects} index={num()} />
+        <Experience items={experiences} index={num()} />
         <Stack items={stack} index={num()} />
         <Education items={education} index={num()} />
         <Contact index={num()} />
